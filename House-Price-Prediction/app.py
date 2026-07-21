@@ -2,27 +2,16 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import joblib
-from pathlib import Path
-
 
 st.set_page_config(page_title="House Price Prediction", layout="wide")
 
 st.title("🏠 House Price Prediction")
-
-import os
-
-st.write("Current directory:", os.getcwd())
-st.write("Files in current directory:", os.listdir())
-st.write("Files beside app.py:", os.listdir(BASE_DIR))
 st.write("Enter the house details below.")
 
-BASE_DIR = Path(__file__).resolve().parent
+model = joblib.load("model.pkl")
 
-MODEL_PATH = BASE_DIR / "model.pkl"
-DATA_PATH = BASE_DIR / "Housing.csv"
-
-model = joblib.load(MODEL_PATH)
-df = pd.read_csv(DATA_PATH)
+# Load dataset to obtain training columns
+df = pd.read_csv("Housing.csv")
 df = pd.get_dummies(df, drop_first=True)
 
 training_columns = df.drop("price", axis=1).columns
